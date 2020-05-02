@@ -10,6 +10,7 @@ public class Classe {
 	Main main;
 	static Statement statement;
 	
+	@SuppressWarnings("static-access")
 	public Classe(Main main, Statement statement) {
 		this.main = main;
 		this.statement = statement;

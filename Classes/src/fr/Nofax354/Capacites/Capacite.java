@@ -7,8 +7,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import net.minecraft.server.v1_8_R3.EntityLightning;
-
 public class Capacite {
 	public static void Guerrier1(Player p) {
 		p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 200, 2));
@@ -23,6 +21,7 @@ public class Capacite {
 	
 	public static void Magicien1(Entity p) {
 		Bukkit.getWorld("world").strikeLightning(p.getLocation());
+		
 	}
 	
 	public static void Magicien1(Location loc) {

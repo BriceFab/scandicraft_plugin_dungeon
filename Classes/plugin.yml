@@ -3,3 +3,7 @@ main: fr.Nofax354.main.Main
 version: 0.1
 description: classes
 author: Nofax354
+commands:
+   dungeon:
+      description: go to dungeon
+      usage: /<command> 

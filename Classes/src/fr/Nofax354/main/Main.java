@@ -4,11 +4,16 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import fr.Nofax354.Classes.Classe;
+import fr.Nofax354.Dungeons.Dungeon;
+import fr.Nofax354.Dungeons.DungeonCommand;
+import fr.Nofax354.Dungeons.DungeonState;
 import fr.Nofax354.listeners.Listeners;
 
 public class Main extends JavaPlugin{
@@ -21,9 +26,14 @@ public class Main extends JavaPlugin{
     
     public HashMap<String, Integer> xp = new HashMap<String, Integer>();
     public HashMap<String, Integer> classes = new HashMap<String, Integer>();
+    public ArrayList<Player> dungeon = new ArrayList<Player>();
+    
+    public Dungeon dungeonT;
     
     @Override
 	public void onEnable() {
+    	dungeonT = new Dungeon();
+    	
 		host = "localhost";
         port = 3306;
         database = "Classes";
@@ -42,6 +52,9 @@ public class Main extends JavaPlugin{
         
         classe = new Classe(this,statement);
         getServer().getPluginManager().registerEvents(new Listeners(statement,this), this);
+        
+        dungeonT.setState(DungeonState.WAITING);
+        this.getCommand("dungeon").setExecutor(new DungeonCommand(this));
 	}
 	
     @Override

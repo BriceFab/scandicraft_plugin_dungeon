@@ -3,13 +3,11 @@ package fr.Nofax354.listeners;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Vector;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -62,7 +60,6 @@ public class Listeners implements Listener {
 		classSelect.setItem(6, Magicien);
 	}
 
-	@SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerJoin(PlayerJoinEvent event) throws SQLException
     {
@@ -102,7 +99,7 @@ public class Listeners implements Listener {
    @EventHandler
    public void onInventoryClick(InventoryClickEvent event) throws SQLException {
 	   Player player = (Player) event.getWhoClicked();
-	   ItemStack clicked = event.getCurrentItem();
+	   //ItemStack clicked = event.getCurrentItem();
 	   Inventory inventory = event.getInventory();
 	   if (inventory.getName().equals(classSelect.getName())) {
 		   if(event.getCurrentItem() != null) {
@@ -126,11 +123,11 @@ public class Listeners implements Listener {
 	   }
    }
    
-   @SuppressWarnings("deprecation")
+
    @EventHandler
    public void onInteract(PlayerInteractEvent event) {
 	   Player p = event.getPlayer();
-	   Action c = event.getAction();
+	   //Action c = event.getAction();
 	   
 	   if(main.classes.containsKey(p.getDisplayName())) {
 		   int classe = main.classes.get(p.getDisplayName());
