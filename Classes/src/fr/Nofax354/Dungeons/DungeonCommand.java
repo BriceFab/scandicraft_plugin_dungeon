@@ -20,20 +20,22 @@ public class DungeonCommand implements CommandExecutor {
 		if (sender instanceof Player) {
 			Player p = (Player) sender;
 		
-			if(main.dungeon.contains(p)) {
+			if(main.dungeonP.contains(p)) {
 				main.dungeon.remove(p);
+				main.dungeonP.remove(p);
 				p.sendMessage("Vous avez été enlevé de la file d'attente pour le donjon");
 			}else {
-				if(main.dungeonT.isState(DungeonState.WAITING) && main.dungeon.size() >= 3) {
+				if(main.dungeonT.isState(DungeonState.WAITING) && main.dungeon.size() >= 1) {
 					DungeonWaitTask waitTask = new DungeonWaitTask(main);
 					waitTask.runTaskTimer(main, 0, 20);
 					main.dungeonT.setState(DungeonState.STARTING);
-					for(int i = 0;i < main.dungeon.size();i++) {
-						main.dungeon.get(i).sendMessage("Le donjon débutera dans 30s");
+					for(int i = 0;i < main.dungeonP.size();i++) {
+						main.dungeonP.get(i).sendMessage("Le donjon débutera dans 30s");
 					}
 				}
-				main.dungeon.add(p);
-				p.sendMessage("Vous avez été ajouté à la file d'attente pour le donjon ("+main.dungeon.size()+"/3)");
+				main.dungeonP.add(p);
+				main.dungeon.put(p, main.nb);
+				p.sendMessage("Vous avez été ajouté à la file d'attente pour le donjon ("+main.dungeon.size()+"/2)");
 			}
 		}
 		return true;
