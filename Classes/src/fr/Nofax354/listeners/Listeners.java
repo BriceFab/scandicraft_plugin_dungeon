@@ -91,7 +91,11 @@ public class Listeners implements Listener {
 	     }.runTaskLater(main, 20L);
     }
 	
-	public void onPlayerQuit(PlayerQuitEvent event) {
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onPlayerQuit(PlayerQuitEvent event) throws SQLException {
+		
+		Classe.setXp(event.getPlayer().getDisplayName(), main.xp.get(event.getPlayer().getDisplayName()));
+		
 		main.xp.remove(event.getPlayer().getDisplayName());
 		main.classes.remove(event.getPlayer().getDisplayName());
 	}

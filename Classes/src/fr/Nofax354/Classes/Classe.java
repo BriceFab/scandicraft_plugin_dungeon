@@ -19,4 +19,8 @@ public class Classe {
 	public static void setClasse(String Username,int Class) throws SQLException {
 		statement.executeUpdate("INSERT INTO class (Username, Classe) VALUES ('"+Username+"', "+Class+");");
 	}
+	
+	public static void setXp(String Username,int Xp) throws SQLException {
+		statement.executeUpdate("UPDATE `class` SET xp="+Xp+" WHERE Username = '"+Username+"';");
+	}
 }

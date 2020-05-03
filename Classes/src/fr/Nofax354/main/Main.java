@@ -1,20 +1,28 @@
 package fr.Nofax354.main;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import fr.Nofax354.Classes.Classe;
 import fr.Nofax354.Dungeons.Dungeon;
-import fr.Nofax354.Dungeons.DungeonCommand;
-import fr.Nofax354.Dungeons.DungeonListeners;
-import fr.Nofax354.Dungeons.DungeonState;
+import fr.Nofax354.Dungeons.DungeonAttenteTask;
+import fr.Nofax354.Dungeons.DungeonManager;
+import fr.Nofax354.Dungeons.dungeonCommand;
+import fr.Nofax354.Dungeons.dungeonListener;
 import fr.Nofax354.listeners.Listeners;
 
 public class Main extends JavaPlugin{
@@ -27,16 +35,14 @@ public class Main extends JavaPlugin{
     
     public HashMap<String, Integer> xp = new HashMap<String, Integer>();
     public HashMap<String, Integer> classes = new HashMap<String, Integer>();
-    public HashMap<Player,Integer> dungeon = new HashMap<Player,Integer>();
-    public ArrayList<Player> dungeonP = new ArrayList<Player>();
-    public HashMap<Integer, Integer> dungeonXp = new HashMap<Integer, Integer>();
-    public int nb = 0;
     
-    public Dungeon dungeonT;
+    public List<Player> attente = new ArrayList<>();
+    public DungeonManager manager = new DungeonManager();
+    private File dungeonFile;
+    private YamlConfiguration dungeonConfig;
     
     @Override
 	public void onEnable() {
-    	dungeonT = new Dungeon();
     	
 		host = "localhost";
         port = 3306;
@@ -53,19 +59,60 @@ public class Main extends JavaPlugin{
             e.printStackTrace();
         }
         
+        //creation fichier config donjons
+        if(!getDataFolder().exists()) {
+        	getDataFolder().mkdir();
+        }
+        
+        dungeonFile = new File(getDataFolder() + File.separator + "Donjons.yml");
+        if(!dungeonFile.exists()) {
+        	try {
+				dungeonFile.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+        
+        dungeonConfig = YamlConfiguration.loadConfiguration(dungeonFile);
+        //charger donjons
+        
+        ConfigurationSection dungeonSection = dungeonConfig.getConfigurationSection("Donjons");
+        
+        for(String string : dungeonSection.getKeys(false)) {
+        	String spawn = dungeonSection.getString(string+".spawn");
+        	String level = dungeonSection.getString(string+".level");
+        	System.out.println("loaded : "+string);
+        	Dungeon dungeon = new Dungeon(parseStringToLoc(spawn));
+        	manager.addDungeon(dungeon);
+        }
         
         classe = new Classe(this,statement);
         getServer().getPluginManager().registerEvents(new Listeners(statement,this), this);
-        getServer().getPluginManager().registerEvents(new DungeonListeners(this), this);
+        getServer().getPluginManager().registerEvents(new dungeonListener(this), this);
+        getCommand("dungeon").setExecutor(new dungeonCommand(this));
         
-        dungeonT.setState(DungeonState.WAITING);
-        this.getCommand("dungeon").setExecutor(new DungeonCommand(this));
+        DungeonAttenteTask start = new DungeonAttenteTask(this);
+		start.runTaskTimer(this, 0, 200);
 	}
 	
     @Override
 	public void onDisable() {
 		
 	}
+    
+    public Location parseStringToLoc(String str) {
+    	String[] parsedLoc = str.split(",");
+    	double x = Double.parseDouble(parsedLoc[0]);
+    	double y = Double.parseDouble(parsedLoc[1]);
+    	double z = Double.parseDouble(parsedLoc[2]);
+    	
+    	return new Location(Dungeon.getWorld("Donjon"), x, y, z);
+    }
+    
+    public String parseLocToString(Location loc) {
+    	return loc.getX()+","+loc.getY()+","+loc.getZ();
+    }
     
     public void openConnection() throws SQLException, ClassNotFoundException {
         if (connection != null && !connection.isClosed()) {
