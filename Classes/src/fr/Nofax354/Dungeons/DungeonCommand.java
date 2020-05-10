@@ -1,5 +1,8 @@
 package fr.Nofax354.Dungeons;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,6 +23,11 @@ public class dungeonCommand implements CommandExecutor {
 		if(sender instanceof Player) {
 			Player p = (Player) sender;
 			if(args.length == 0) {
+				List<Player> pl = new ArrayList<>();
+				pl.add(p);
+				main.manager.joinDungeon(pl);
+				
+			}else if(args.length == 1 && args[0].equalsIgnoreCase("party")) {
 				if(main.attente.contains(p)) {
 					main.attente.remove(p);
 					p.sendMessage("vous n'êtes plus dans la file d'attente");

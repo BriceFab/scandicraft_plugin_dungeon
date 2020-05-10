@@ -17,6 +17,12 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.WorldEdit;
+import com.sk89q.worldedit.bukkit.BukkitWorld;
+import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import com.sk89q.worldedit.world.World;
+
 import fr.Nofax354.Classes.Classe;
 import fr.Nofax354.Dungeons.Dungeon;
 import fr.Nofax354.Dungeons.DungeonAttenteTask;
@@ -36,10 +42,14 @@ public class Main extends JavaPlugin{
     public HashMap<String, Integer> xp = new HashMap<String, Integer>();
     public HashMap<String, Integer> classes = new HashMap<String, Integer>();
     
+    public List<Location> spawns = new ArrayList<>();
+    
     public List<Player> attente = new ArrayList<>();
-    public DungeonManager manager = new DungeonManager();
+    public DungeonManager manager = new DungeonManager(this);
     private File dungeonFile;
     private YamlConfiguration dungeonConfig;
+    public File level0;
+    public WorldEditPlugin we;
     
     @Override
 	public void onEnable() {
@@ -58,6 +68,7 @@ public class Main extends JavaPlugin{
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
         
         //creation fichier config donjons
         if(!getDataFolder().exists()) {
@@ -81,10 +92,8 @@ public class Main extends JavaPlugin{
         
         for(String string : dungeonSection.getKeys(false)) {
         	String spawn = dungeonSection.getString(string+".spawn");
-        	String level = dungeonSection.getString(string+".level");
         	System.out.println("loaded : "+string);
-        	Dungeon dungeon = new Dungeon(parseStringToLoc(spawn));
-        	manager.addDungeon(dungeon);
+        	spawns.add(parseStringToLoc(spawn));
         }
         
         classe = new Classe(this,statement);
@@ -92,8 +101,13 @@ public class Main extends JavaPlugin{
         getServer().getPluginManager().registerEvents(new dungeonListener(this), this);
         getCommand("dungeon").setExecutor(new dungeonCommand(this));
         
+        we = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
+        //level0 = new File(this.getDataFolder()+File.separator+"level0.schematic");
+        
+        /*
         DungeonAttenteTask start = new DungeonAttenteTask(this);
 		start.runTaskTimer(this, 0, 200);
+		*/
 	}
 	
     @Override

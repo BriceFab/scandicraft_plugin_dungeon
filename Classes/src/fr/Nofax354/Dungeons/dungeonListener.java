@@ -5,7 +5,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-import fr.Nofax354.Classes.Classe;
 import fr.Nofax354.main.Main;
 
 public class dungeonListener implements Listener {
@@ -41,6 +40,7 @@ public class dungeonListener implements Listener {
 					pl.sendMessage("xp: "+main.xp.get(pl.getDisplayName()));
 				}
 				d.restart();
+				
 			}
 		}
 	}
