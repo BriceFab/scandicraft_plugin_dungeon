@@ -51,6 +51,7 @@ public class Dungeon {
 			session = main.we.getWorldEdit().getEditSessionFactory().getEditSession(new BukkitWorld(Dungeon.getWorld("Donjon")), 999999999);
 			System.out.println(clipboard.getWidth()+","+clipboard.getHeight()+","+clipboard.getLength());
 			clipboard.paste(session, new Vector(loc.getX(),loc.getY(),loc.getZ()), false);
+			clipboard.pasteEntities(new Vector(loc.getX(),loc.getY(),loc.getZ()));
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
