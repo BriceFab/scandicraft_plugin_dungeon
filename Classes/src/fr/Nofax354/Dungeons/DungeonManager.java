@@ -30,7 +30,7 @@ public class DungeonManager {
 				nextDungeon.getPlayers().add(p);
 				p.sendMessage("tp");
 				//p.teleport(nextDungeon.getLoc());
-				p.teleport(new Location(Dungeon.getWorld("Donjon"),-20,0,-20));
+				p.teleport(new Location(Dungeon.getWorld("Donjon"),-8.5,2.3,12.5 * (nextDungeon.getId()+1)));
 			}
 			nextDungeon.setStarted(true);
 			

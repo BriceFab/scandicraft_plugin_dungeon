@@ -27,6 +27,7 @@ import fr.Nofax354.Classes.Classe;
 import fr.Nofax354.Dungeons.Dungeon;
 import fr.Nofax354.Dungeons.DungeonAttenteTask;
 import fr.Nofax354.Dungeons.DungeonManager;
+import fr.Nofax354.Dungeons.PartyManager;
 import fr.Nofax354.Dungeons.dungeonCommand;
 import fr.Nofax354.Dungeons.dungeonListener;
 import fr.Nofax354.listeners.Listeners;
@@ -46,6 +47,7 @@ public class Main extends JavaPlugin{
     
     public List<Player> attente = new ArrayList<>();
     public DungeonManager manager = new DungeonManager(this);
+    public PartyManager Pmanager = new PartyManager(this);
     private File dungeonFile;
     private YamlConfiguration dungeonConfig;
     public File level0;

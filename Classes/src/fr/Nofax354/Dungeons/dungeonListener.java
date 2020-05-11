@@ -42,6 +42,16 @@ public class dungeonListener implements Listener {
 				d.restart();
 				
 			}
+		}else if(event.getEntity() instanceof Player) {
+			Player p = (Player) event.getEntity();
+			Dungeon d = main.manager.getDungeonByPlayer(p); 
+			if(d != null) {
+				d.removePlayer(p);
+				p.sendMessage("tu n'a pas réussi a aboutir le donjon");
+			}
+			if(d.getPlayers().size() == 0) {
+				d.restart();
+			}
 		}
 	}
 

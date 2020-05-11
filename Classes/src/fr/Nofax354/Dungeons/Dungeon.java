@@ -89,7 +89,11 @@ public class Dungeon {
 	public List<Player> getPlayers() {
 		return players;
 	}
-
+	
+	
+	public void removePlayer(Player p) {
+		players.remove(p);
+	}
 
 	public boolean isStarted() {
 		return isStarted;
@@ -118,5 +122,9 @@ public class Dungeon {
 
 	public void setXp(int xp) {
 		this.xp = xp;
+	}
+
+	public int getId() {
+		return id;
 	}
 }
