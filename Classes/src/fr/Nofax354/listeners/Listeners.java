@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -23,6 +24,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import fr.Nofax354.Capacites.Capacite;
 import fr.Nofax354.Classes.Classe;
+import fr.Nofax354.Dungeons.Dungeon;
 import fr.Nofax354.Utils.Functions;
 import fr.Nofax354.main.Main;
 
@@ -64,6 +66,7 @@ public class Listeners implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) throws SQLException
     {
 		Player p = event.getPlayer();
+		p.teleport(new Location(Bukkit.getWorld("world"),main.spawn.getX(),main.spawn.getY(),main.spawn.getZ()));
 		nb = 0;
 		
 		result = statement.executeQuery("SELECT * FROM class WHERE Username = '"+p.getDisplayName()+"'");

@@ -6,4 +6,8 @@ author: Nofax354
 commands:
    dungeon:
       description: go to dungeon
-      usage: /<command> 
+      usage: /dungeon
+   dungeons:
+      description: got to dungeons map
+      usage: /dungeons
+      permission: dungeon.dungeons
